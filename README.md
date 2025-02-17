@@ -4,89 +4,153 @@ https://app.powerbi.com/groups/me/reports/69eeb5fd-ab64-4242-a4be-511b46f7d7a5/a
 
 ## Features Implemented
 
-### 1. Impact of Trip Direction on Delays
-**Formula:**
+### 1) Impact of Trip Direction on Delays: 
+
+- **X-axis:** sum of trip_delay 
+- **Y-axis:** trip_direction 
+
+**Formula:**  
 ```plaintext
 Impact_Trip_Direction = SUM(ITMS[trip_delay])
 ```
-**Description:** Aggregates the total trip delay for each trip direction, helping identify which directions experience more significant delays.
+
+**Description:**  
+This visual shows the impact of different trip directions on delays. It aggregates the total trip delay for each direction, helping identify which directions experience more significant delays.
 
 ---
 
-### 2. Total Trip Delay by Vehicle and Start Time
-**Formula:**
+### 1.1) Total Trip Delay by Vehicle and Start Time
+
+- **X-axis:** last_stop_arrival_time  
+- **Y-axis:** sum of trip_delay  
+
+**Formula:**  
 ```plaintext
 Total_Trip_Delay_Vehicle = SUM(ITMS[trip_delay])
 ```
-**Description:** Tracks total trip delay for each vehicle, with start time on the x-axis and delay on the y-axis.
+
+**Description:**  
+This chart shows the total trip delay for each vehicle, with the x-axis representing the vehicle label and the y-axis showing the actual trip start time. It helps track how delays vary for each vehicle over time.
 
 ---
 
-### 3. Traffic Flow and Stop Density Across Locations
-**Formula:**
+### 2) Total Trip Delay by Vehicle and Start Time
+
+- **X-axis:** vehicle_label  
+- **Y-axis:** actual_trip_start_time  
+
+**Formula:**  
+```plaintext
+Total_Trip_Delay_Vehicle = SUM(ITMS[trip_delay])
+```
+
+**Description:**  
+This chart shows the total trip delay for each vehicle, with the x-axis representing the vehicle label and the y-axis showing the actual trip start time. It helps track how delays vary for each vehicle over time.
+
+---
+
+### 3) Traffic Flow and Stop Density Across Locations
+
+- **X-axis:** sum of speed  
+- **Y-axis:** sum of last_stop_id  
+
+**Formula:**  
 ```plaintext
 Traffic_Flow_Stop_Density = SUM(ITMS[speed])
 ```
-**Description:** Compares traffic flow and stop density to identify high-congestion areas.
+
+**Description:**  
+This visual compares the traffic flow (sum of speed) and the density of stops (count of last stop IDs) across different locations, helping identify areas with high traffic and stop density.
 
 ---
 
-### 4. Total Speed by Route
-**Formula:**
+### 4) Total Speed by Route
+
+- **X-axis:** sum of speed  
+- **Y-axis:** route_id  
+
+**Formula:**  
 ```plaintext
 Total_Speed_Route = SUM(ITMS[speed])
 ```
-**Description:** Aggregates total speed by each route to assess speed performance.
+
+**Description:**  
+This visual aggregates the total speed by each route, helping assess the overall speed across different routes.
 
 ---
 
-### 5. Total Speed by Observation Date Time
-**Formula:**
+### 5) Total Speed by Observation Date Time
+
+- **X-axis:** observationDateTime  
+- **Y-axis:** sum of speed  
+
+**Formula:**  
 ```plaintext
 Total_Speed_ObservationDateTime = SUM(ITMS[speed])
 ```
-**Description:** Tracks speed trends over time based on observation timestamps.
+
+**Description:**  
+This visual tracks the total speed across different observation date times, helping identify trends and patterns in speed over time.
 
 ---
 
-### 6. Fleet Utilization
-**Formula:**
+### 6) Fleet Utilisation
+
+**Formula:**  
 ```plaintext
 FleetUtilization = COUNT(ITMS[trip_id]) / DISTINCTCOUNT(ITMS[vehicle_label])
 ```
-**Description:** Calculates how much of the fleet is actively used by dividing total trips by unique vehicles.
+
+**Description:**  
+This metric calculates the fleet utilization by dividing the total number of trips by the number of distinct vehicles, giving insights into how much of the fleet is actively used.
 
 ---
 
-### 7. Count of Route ID by Trip Delay
-**Formula:**
+### 7) Count of Route ID by Trip Delay
+
+- **X-axis:** count of route_id  
+- **Y-axis:** trip_delay  
+
+**Formula:**  
 ```plaintext
 Count_Route_TripDelay = COUNT(ITMS[route_id])
 ```
-**Description:** Identifies routes experiencing frequent delays.
+
+**Description:**  
+This visual shows the count of routes experiencing delays, helping identify routes that are frequently delayed.
 
 ---
 
-### 8. Average Speed
-**Formula:**
+### 8) Avg Speed
+
+**Formula:**  
 ```plaintext
 AvgSpeed = AVERAGE(ITMS[speed])
 ```
-**Description:** Computes the average speed of all trips.
+
+**Description:**  
+This formula calculates the average speed of all trips in the dataset, helping to understand the overall speed performance.
 
 ---
 
-### 9. Average Delay
-**Formula:**
+### 9) Avg Delay
+
+**Formula:**  
 ```plaintext
 AvgDelay = AVERAGE(ITMS[trip_delay])
 ```
-**Description:** Determines the average trip delay.
+
+**Description:**  
+This formula calculates the average trip delay across all trips, providing an overview of the typical delay encountered.
 
 ---
 
-### 10. Bus Bunching
-**Formula:**
+### 10) Bus Bunching
+
+- **X-axis:** route_id  
+- **Y-axis:** BusInterval  
+
+**Formula:**  
 ```plaintext
 BusInterval = DATEDIFF(
     CALCULATE(MAX(ITMS[last_stop_arrival_time])),
@@ -94,71 +158,21 @@ BusInterval = DATEDIFF(
     SECOND
 )
 ```
-**Description:** Measures time differences between buses on the same route to detect bunching.
+
+**Description:**  
+This formula calculates the time difference (interval) between the first and last buses of the same route at each stop, helping to identify bus bunching.
 
 ---
 
-### 11. Trips Per Hour
-**Formula:**
-```plaintext
-TripsPerHour = COUNTROWS(ITMS)
-```
-**Description:** Counts the number of trips per hour.
+## Sustainability Insights
 
----
+### 16) CO2 Emissions
 
-### 12. Geospatial Distribution of Routes and Trip Delays
-**Formula:**
-```plaintext
-Latitude = AVERAGE(ITMS[shape_pt_lat])
-Longitude = AVERAGE(ITMS[shape_pt_lon])
-```
-**Description:** Uses a heatmap to show trip delays across geographic locations.
+- **Pie Chart**  
+- **Legend:** vehicle_label  
+- **Values:** CO2_Emissions_upd  
 
----
-
-### 13. Route Reliability Index
-**Formula:**
-```plaintext
-Route_Reliability_Index = AVERAGEX(FILTER(ITMS, ITMS[trip_delay] > 0), ITMS[trip_delay])
-```
-**Description:** Assesses route consistency based on trip delays.
-
----
-
-### 14. Fleet Efficiency Monitor
-**Formula:**
-```plaintext
-Fleet_Efficiency = DIVIDE(SUM(ITMS[speed]), SUM(ITMS[trip_delay]), 0)
-```
-**Description:** Evaluates fleet performance by comparing speed and delay.
-
----
-
-### 15. Maximum Trip Delay
-**Formula:**
-```plaintext
-Max_Trip_Delay = MAX(ITMS[trip_delay])
-```
-**Description:** Identifies the longest trip delay.
-
----
-
-### 16. Estimated Arrival Time
-**Formula:**
-```plaintext
-Estimated_TA = 
-    VAR Distance = SUM(ITMS[speed]) * (SUM(ITMS[trip_delay]) / 60)
-    VAR Time_to_Complete = Distance / AVERAGE(ITMS[speed])
-    VAR Current_Time = NOW()
-    RETURN Current_Time + Time_to_Complete / 24
-```
-**Description:** Estimates the vehicle's arrival time based on speed and delays.
-
----
-
-### 17. CO2 Emissions
-**Formula:**
+**Formula:**  
 ```plaintext
 CO2_Emissions_upd = 
     VAR Total_Trip_Delay_Hours = SUM(ITMS[trip_delay]) / 60
@@ -167,14 +181,22 @@ CO2_Emissions_upd =
     VAR CO2_Emission_Factor = 2.31
     RETURN Fuel_Consumption * CO2_Emission_Factor
 ```
-**Description:** Calculates CO2 emissions from trip delays and fuel consumption.
+
+**Description:**  
+This formula calculates CO2 emissions based on trip delays and vehicle speed, showing the environmental impact of delays.
 
 ---
 
-### 18. Fuel Efficiency
-**Formula:**
+### 17) Fuel Efficiency
+
+- **Columns:** vehicle_label, route_id, fuel_efficiency  
+
+**Formula:**  
 ```plaintext
 Fuel_Efficiency = DIVIDE(SUM(ITMS[speed]), SUM(ITMS[trip_delay]), 0)
 ```
-**Description:** Measures fuel efficiency based on speed and delay data.
+
+**Description:**  
+Calculates vehicle fuel efficiency by comparing speed and trip delay.
+
 
